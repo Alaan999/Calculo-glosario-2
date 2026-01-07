@@ -1,0 +1,191 @@
+import streamlit as st
+
+# ============================================
+# Configuración de la página
+# ============================================
+st.set_page_config(
+    page_title="Glosario Cálculo Vectorial",
+    page_icon="📐",
+    layout="wide"
+)
+
+# Estilo personalizado para mejorar la legibilidad
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f5f7f9;
+    }
+    .stExpander {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# ============================================
+# Diccionario de Datos (Tu glosario completo)
+# ============================================
+glosario = {
+    "Base": "Una base es un conjunto de vectores linealmente independientes que generan un espacio vectorial.",
+    "Cambio_de_variables": "Técnica que transforma integrales múltiples a sistemas de coordenadas más convenientes. Usa el jacobiano como factor de escala.",
+    "Campo_conservativo": "Un campo conservativo es aquel que puede expresarse como el gradiente de un potencial escalar.",
+    "Campo_escalar": "Asigna un número real a cada punto del espacio.",
+    "Campo_irrotacional": "Campo cuyo rotacional es cero, indicando ausencia de giro.",
+    "Campo_solenoidal": "Campo vectorial cuya divergencia es cero; sin fuentes ni sumideros.",
+    "Campo_vectorial": "Asigna un vector a cada punto del espacio.",
+    "Circulacion": "Mide la tendencia de un campo a girar alrededor de una curva cerrada.",
+    "Coordenadas_cilindricas": "Sistema de coordenadas basado en (r, θ, z).",
+    "Coordenadas_esfericas": "Sistema basado en (ρ, θ, φ).",
+    "Curva_parametrica": "Una curva descrita mediante funciones dependientes de un parámetro.",
+    "Divergencia": "Mide la expansión o compresión de un campo vectorial.",
+    "Flujo": "Cantidad de campo vectorial que atraviesa una superficie.",
+    "Gradiente": "Dirección de máximo crecimiento de un campo escalar.",
+    "Integral_de_linea": "Evalúa un campo escalar o vectorial sobre una curva.",
+    "Integral_de_superficie": "Evalúa un campo sobre una superficie parametrizada.",
+    "Integral_triple": "Evalúa funciones dentro de volúmenes tridimensionales.",
+    "Jacobiano": "Determinante que actúa como factor de escala en cambios de coordenadas.",
+    "Magnitud": "Longitud o tamaño de un vector, calculada como la raíz cuadrada del sumatorio de los cuadrados de sus componentes.",
+    "Normal": "Vector perpendicular a una superficie.",
+    "Producto_cruz": "Operación vectorial que produce un vector perpendicular a dos vectores dados.",
+    "Producto_punto": "Operación que mide la alineación de dos vectores.",
+    "Proyeccion": "Proyección o sombra de un vector sobre otro.",
+    "Rotacional": "Mide la tendencia a rotar de un campo vectorial.",
+    "Superficie_parametrica": "Superficie descrita mediante dos parámetros.",
+    "Teorema_de_Stokes": "Relaciona la circulación de un campo con el rotacional sobre una superficie.",
+    "Teorema_de_Gauss": "El flujo neto de un campo sobre una superficie cerrada iguala la integral de la divergencia dentro del volumen.",
+    "Teorema_de_Green": "Relaciona integrales de línea con integrales dobles en regiones planas.",
+    "Vector_unitario": "Vector de longitud 1 que indica dirección.",
+    "Derivada": "Expresa cómo cambia instantáneamente una función cuando su variable independiente varía infinitesimalmente.",
+    "Limite": "Valor al que se aproxima una función cuando su variable se acerca a un punto.",
+    "Continuidad": "Garantiza ausencia de saltos o rupturas; el límite y el valor de la función coinciden.",
+    "Regla_del_producto": "Método para derivar el producto de dos funciones utilizando sus derivadas individuales.",
+    "Regla_del_cociente": "Permite derivar un cociente aplicando estructura específica con derivadas del numerador y denominador.",
+    "Regla_de_la_cadena": "Permite derivar funciones compuestas multiplicando derivada externa evaluada internamente y la interna.",
+    "Punto_critico": "Lugar donde la derivada es cero o no existe; puede indicar máximos, mínimos o inflexiones.",
+    "Segunda_derivada": "Determina la curvatura de una función y la naturaleza de los puntos críticos.",
+    "Pendiente_tangente": "Valor de la derivada en el punto; expresa la velocidad instantánea de cambio.",
+    "Derivada_direccional": "Tasa de cambio de una función multivariable en una dirección específica.",
+    "Gradiente_extendido": "Vector de derivadas parciales que señala dirección de mayor incremento.",
+    "Diferenciacion_implicita": "Permite derivar sin despejar la variable dependiente usando regla de la cadena.",
+    "Aproximacion_lineal": "Estimación local de una función mediante la recta tangente.",
+    "Serie_de_Taylor": "Representación de una función como suma infinita basada en sus derivadas.",
+    "Serie_de_Maclaurin": "Caso particular de Taylor centrado en cero.",
+    "Monotonia": "Describe si una función crece o decrece según el signo de la derivada.",
+    "Tasa_de_cambio_instantanea": "Variación instantánea de una cantidad respecto a otra.",
+    "Teorema_de_Rolle": "Si f(a)=f(b) y es continua y derivable, existe un punto donde f’=0.",
+    "Teorema_del_valor_medio": "Existe un punto donde la derivada es igual a la pendiente promedio del intervalo.",
+    "Funcion_diferenciable": "Es continua y posee derivada en todo punto del dominio.",
+    "Curvatura": "Mide la desviación de una curva respecto a la línea recta.",
+    "Punto_de_inflexion": "Lugar donde la concavidad cambia de signo.",
+    "Derivadas_laterales": "Pendientes obtenidas acercándose desde la izquierda o derecha.",
+    "Incremento_diferencial": "Cambio aproximado de una función asociado a variaciones pequeñas en sus variables.",
+    "Elasticidad": "Variación porcentual de una función ante cambios porcentuales en su variable.",
+    "Derivada_logaritmica": "Técnica útil para derivar productos y potencias utilizando logaritmos.",
+    "Derivadas_parciales": "Miden el cambio de una función respecto a una variable manteniendo constantes las demás.",
+    "Criterio_primera_derivada": "Clasifica máximos y mínimos según cambio de signo en la derivada.",
+    "Criterio_segunda_derivada": "Determina si un punto crítico es máximo o mínimo analizando la concavidad.",
+    "Funcion_suave": "Posee derivadas continuas hasta cierto orden.",
+    "Derivada_numerica": "Aproximación de la derivada mediante diferencias finitas.",
+    "Velocidad_instantanea": "Derivada de la posición respecto al tiempo.",
+    "Aceleracion": "Derivada de la velocidad; segunda derivada de la posición.",
+    "Ecuaciones_diferenciales": "Relaciones entre funciones y sus derivadas que modelan fenómenos dinámicos.",
+    "Funcion_lipschitziana": "Satisface una desigualdad que garantiza unicidad de soluciones en EDOs.",
+    "Extremo_absoluto": "Máximo o mínimo global en todo el dominio.",
+    "Extremo_relativo": "Máximo o mínimo local dentro de un intervalo reducido.",
+    "Optimizacion": "Proceso de encontrar valores que maximizan o minimizan una función.",
+    "Derivada_trigonometrica": "Expresiones derivadas de funciones trigonométricas basadas en el círculo unitario.",
+    "Funcion_convexa": "Presenta derivada creciente y concavidad hacia arriba.",
+    "Campo_vectorial_extendido": "Asigna un vector a cada punto del espacio, representando fuerzas o flujos.",
+    "Campo_escalar_extendido": "Asigna un valor real a cada punto, como temperatura o presión.",
+    "Gradiente_de_campo_escalar": "Vector de máximo crecimiento de un campo escalar.",
+    "Divergencia_de_campo": "Mide flujo neto que entra o sale de un punto.",
+    "Rotacional_de_campo": "Mide tendencia de un campo a girar alrededor de un punto.",
+    "Operador_nabla": "Símbolo ∇ que agrupa gradiente, divergencia y rotacional.",
+    "Curva_parametrizada_extendida": "Trayectoria descrita mediante un parámetro para estudiar velocidad o longitud.",
+    "Longitud_de_curva": "Integral de la norma del vector velocidad.",
+    "Curvatura_de_curva": "Mide el cambio de dirección por unidad de longitud de arco.",
+    "Vector_tangente_unitario": "Indica la dirección de movimiento normalizada.",
+    "Vector_normal_principal": "Indica la dirección del cambio de la tangente.",
+    "Vector_binormal": "Completa el sistema ortonormal de Frenet-Serret.",
+    "Torsion": "Mide cuánto se aleja una curva de un plano.",
+    "Producto_punto_avanzado": "Calcula proyección y ángulo entre vectores.",
+    "Producto_cruz_avanzado": "Genera vector perpendicular que mide área orientada.",
+    "Jacobiano_avanzado": "Determinante clave en cambios de variables múltiples.",
+    "Integral_de_linea_escalar": "Integra un campo escalar sobre una curva.",
+    "Integral_de_linea_vectorial": "Mide trabajo realizado por un campo a lo largo de un camino.",
+    "Circulacion_avanzada": "Flujo tangencial alrededor de una curva cerrada.",
+    "Flujo_vectorial_avanzado": "Cantidad de campo que atraviesa una superficie.",
+    "Superficie_parametrizada_extendida": "Describe superficies mediante dos parámetros.",
+    "Vector_normal_superficie": "Perpendicular obtenido mediante producto cruz de tangentes.",
+    "Area_de_superficie": "Integral de la norma del producto cruz de vectores tangentes.",
+    "Laplaciano": "Divergencia del gradiente; mide difusión o comportamiento armónico.",
+    "Curvatura_gaussiana": "Producto de las curvaturas principales de una superficie.",
+    "Curvatura_media": "Promedio de las curvaturas principales.",
+    "Geodesica": "Curva de longitud mínima sobre una superficie.",
+    "Superficie_minima": "Cumple curvatura media cero; típica en películas de jabón.",
+}
+
+# ============================================
+# Interfaz de Usuario
+# ============================================
+
+# Barra Lateral con autores
+with st.sidebar:
+    st.title("📚 Información")
+    st.markdown("### **Autores:**")
+    autores = [
+        "López Hernández Rommel Rodrigo",
+        "Pérez Mora Ximena",
+        "Sandoval Domínguez Ángel Giovanni",
+        "Dávila Cedillo Emanuel",
+        "Montoya Salinas Aldair",
+        "Valencia Díaz Abraham Javet",
+        "Durán Bernardino Alan Zaid"
+    ]
+    for autor in autores:
+        st.write(f"- {autor}")
+    st.divider()
+    st.info("Proyecto desarrollado en Python utilizando Streamlit.")
+
+# Título principal
+st.title("📐 Glosario Interactivo de Cálculo Vectorial")
+st.markdown("Busca conceptos fundamentales de cálculo multivariable y vectorial de forma rápida.")
+
+# Buscador
+busqueda = st.text_input("🔍 Buscar concepto:", placeholder="Escribe aquí (ej. Gradiente)...").strip().lower()
+
+st.divider()
+
+# Filtrado de resultados
+if busqueda:
+    resultados = {k: v for k, v in glosario.items() if busqueda in k.lower() or busqueda in v.lower()}
+    
+    if resultados:
+        st.subheader(f"Resultados para: '{busqueda}'")
+        for termino, defn in resultados.items():
+            with st.expander(f"📙 {termino.replace('_', ' ')}", expanded=True):
+                st.write(defn)
+    else:
+        st.warning("No se encontraron términos que coincidan con tu búsqueda.")
+else:
+    # Vista general por orden alfabético
+    st.subheader("Índice de Conceptos")
+    col1, col2 = st.columns(2)
+    
+    items = sorted(glosario.items())
+    mitad = len(items) // 2
+    
+    with col1:
+        for termino, defn in items[:mitad]:
+            with st.expander(f"📘 {termino.replace('_', ' ')}"):
+                st.write(defn)
+    
+    with col2:
+        for termino, defn in items[mitad:]:
+            with st.expander(f"📘 {termino.replace('_', ' ')}"):
+                st.write(defn)
+
+# Pie de página
+st.markdown("---")
+st.caption("Glosario de Cálculo Vectorial – 2024")
